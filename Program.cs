@@ -40,9 +40,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TourService>();
+
 builder.Services.AddScoped<JwtProvider>();
+builder.Services.AddScoped<ApiUser>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

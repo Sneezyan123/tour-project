@@ -12,6 +12,8 @@ namespace TourProject.Persistence
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Tour> Tours { get; set; }
+        public DbSet<UserJoinsTour> UserJoinsTours { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserRole>()
@@ -26,6 +28,17 @@ namespace TourProject.Persistence
                 .WithMany(u => u.UserRoles)
                 .HasForeignKey(ur => ur.RoleId);
 
+
+            modelBuilder.Entity<UserJoinsTour>()
+                .HasKey(ut => new { ut.UserId, ut.TourId });
+            modelBuilder.Entity<UserJoinsTour>()
+                .HasOne(ut => ut.User)
+                .WithMany(u => u.JoinedTours)
+                .HasForeignKey(ut => ut.UserId);
+            modelBuilder.Entity<UserJoinsTour>()
+                .HasOne(ut => ut.Tour)
+                .WithMany(t=> t.JoinedUsers)
+                .HasForeignKey(ut => ut.TourId);
 
             var Admin = new Role()
             {
